@@ -1,4 +1,5 @@
 ﻿using BookoPhile.Data;
+using BookoPhile.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookoPhile.Controllers
@@ -18,6 +19,24 @@ namespace BookoPhile.Controllers
 
         public IActionResult Create()
         {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Create")]
+        public IActionResult CreatePost(Category category)
+        {
+                if (_context.Categories.Any(c => c.Name.ToLower() == category.Name.ToLower()))
+                {
+                ModelState.AddModelError("", "catgeory name already available");
+                }
+            if(ModelState.IsValid)
+            {
+                _context.Categories.Add(category);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
             return View();
         }
     }
