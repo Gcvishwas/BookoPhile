@@ -27,10 +27,10 @@ namespace BookoPhile.Controllers
         [ActionName("Create")]
         public IActionResult CreatePost(Category category)
         {
-                if (_context.Categories.Any(c => c.Name.ToLower() == category.Name.ToLower()))
-                {
-                ModelState.AddModelError("", "catgeory name already available");
-                }
+            if (_context.Categories.Any(c => c.Name == category.Name))
+            {
+                ModelState.AddModelError("", "Category name already exists");
+            }
             if(ModelState.IsValid)
             {
                 _context.Categories.Add(category);
