@@ -27,7 +27,7 @@ namespace BookoPhile.Controllers
         [ActionName("Create")]
         public IActionResult CreatePost(Category category)
         {
-            if (_context.Categories.Any(c => c.Name == category.Name))
+            if (!String.IsNullOrEmpty(category.Name) && _context.Categories.Any(c => c.Name == category.Name))
             {
                 ModelState.AddModelError("", "Category name already exists");
             }
@@ -37,6 +37,33 @@ namespace BookoPhile.Controllers
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
+            return View();
+        }
+
+        public IActionResult Edit(int? Id)
+        {
+            if(Id==null || Id == 0)
+            {
+                return NotFound();
+            }
+            var category = _context.Categories.Find(Id);
+            if(category == null){
+                return NotFound();
+            }
+
+
+            return View(category);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Edit")]
+        public IActionResult EditPost()
+        {
+            return View();
+        }
+        public IActionResult Delete() 
+        {
             return View();
         }
     }
