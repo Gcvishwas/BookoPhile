@@ -47,24 +47,34 @@ namespace BookoPhile.Controllers
                 return NotFound();
             }
             var category = _context.Categories.Find(Id);
-            if(category == null){
+            if(category == null)
+            {
                 return NotFound();
             }
-
-
             return View(category);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Edit")]
-        public IActionResult EditPost()
+        public IActionResult EditPost(Category category)
         {
+            if(!String.IsNullOrEmpty(category.Name) && _context.Categories.Any(c=>c.Name.ToLower()==category.Name.ToLower() && c.Id != category.Id))
+            {
+                ModelState.AddModelError("", "Category name already exists");
+            }
+
+            if (ModelState.IsValid)
+            {
+                _context.Categories.Update(category);
+                _context.SaveChanges();
+                return RedirectToAction("Index");
+            }
             return View();
         }
         public IActionResult Delete() 
         {
-            return View();
+            return View(); 
         }
     }
 }
