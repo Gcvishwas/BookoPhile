@@ -93,7 +93,7 @@ namespace BookoPhile.Controllers
         public IActionResult DeleteItem(int? Id)
         {
             var category = _context.Categories.Find(Id);
-            2if (category == null)
+            if (category == null)
             {
                 return NotFound();
             }
