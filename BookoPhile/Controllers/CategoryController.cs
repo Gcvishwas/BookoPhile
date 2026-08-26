@@ -72,9 +72,34 @@ namespace BookoPhile.Controllers
             }
             return View();
         }
-        public IActionResult Delete() 
+        public IActionResult Delete(int? Id) 
         {
-            return View(); 
+            if (Id == null || Id == 0)
+            {
+                return NotFound();
+            }
+            var category = _context.Categories.Find(Id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category); 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ActionName("Delete")]
+
+        public IActionResult DeleteItem(int? Id)
+        {
+            var category = _context.Categories.Find(Id);
+            2if (category == null)
+            {
+                return NotFound();
+            }
+            _context.Categories.Remove(category);
+            _context.SaveChanges();
+            return RedirectToAction("index");
         }
     }
 }
