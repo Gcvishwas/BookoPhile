@@ -1,3 +1,7 @@
 <Solution>
+  <Project Path="BookoPhile.Business/BookoPhile.Business.csproj" Id="9428028e-ec54-4d76-8c96-6b41a5f9363c" />
+  <Project Path="BookoPhile.DataAccess/BookoPhile.DataAccess.csproj" Id="f35b55e4-b256-4ffc-ab2d-6ff0ffb04b49" />
+  <Project Path="BookoPhile.Models/BookoPhile.Models.csproj" Id="265479e4-dc23-4f09-bbde-137c40d7ad6f" />
+  <Project Path="BookoPhile.Utility/BookoPhile.Utility.csproj" Id="afa1b712-d918-4e49-9906-fc15d83f474a" />
   <Project Path="BookoPhile/BookoPhile.csproj" />
 </Solution>
