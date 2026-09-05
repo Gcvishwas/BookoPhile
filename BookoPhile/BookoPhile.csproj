@@ -15,4 +15,13 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BookoPhile.Business\BookoPhile.Business.csproj" />
+    <ProjectReference Include="..\BookoPhile.DataAccess\BookoPhile.DataAccess.csproj" />
+  </ItemGroup>
+
 </Project>

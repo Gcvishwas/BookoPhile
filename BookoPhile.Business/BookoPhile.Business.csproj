@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BookoPhile.DataAccess\BookoPhile.DataAccess.csproj" />
+    <ProjectReference Include="..\BookoPhile.Models\BookoPhile.Models.csproj" />
+    <ProjectReference Include="..\BookoPhile.Utility\BookoPhile.Utility.csproj" />
+  </ItemGroup>
+
 </Project>

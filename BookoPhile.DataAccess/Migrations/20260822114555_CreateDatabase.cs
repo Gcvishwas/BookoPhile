@@ -4,7 +4,7 @@
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace BookoPhile.Migrations
+namespace BookoPhile.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class CreateDatabase : Migration
