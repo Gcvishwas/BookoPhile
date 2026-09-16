@@ -5,10 +5,16 @@ using System.Text;
 
 namespace BookoPhile.Business.Services.IServices
 {
-    public interface ICategroyServices
+    public interface ICategoryServices
     {
         Task<Category?> GetCategoryByIdAsync(int id);
+
         Task<IEnumerable<Category>> GetCategoriesAsync();
+
         Task<Category> CreateCategoryAsync(Category category);
+
+        Task UpdateCategoryAsync(Category category);  
+
+        Task<Category> DeleteCategoryAsync(int id);
     }
 }
