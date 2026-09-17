@@ -1,36 +1,61 @@
 ﻿using BookoPhile.Business.Services.IServices;
+using BookoPhile.Data;
 using BookoPhile.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System.Reflection.Metadata.Ecma335;
 
 namespace BookoPhile.Business.Services
 {
     public class CategoryService : ICategoryServices
     {
-        public Task<Category> CreateCategoryAsync(Category category)
+
+        private readonly ApplicationDbContext _context;
+
+        public CategoryService(ApplicationDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<Category> DeleteCategoryAsync(int id)
+        public async Task<IEnumerable<Category>> GetCategoriesAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Categories.ToListAsync();
         }
 
-        public Task<IEnumerable<Category>> GetCategoriesAsync()
+        public async Task<Category?> GetCategoryByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Categories.FindAsync(id);
+        } 
+        public async Task<Category> CreateCategoryAsync(Category category)
+        {
+            _context.Categories.Add(category);
+            await _context.SaveChangesAsync();
+            return category;
         }
 
-        public Task<Category?> GetCategoryByIdAsync(int id)
+        public async Task<Category> DeleteCategoryAsync(int id)
         {
-            throw new NotImplementedException();
+           var category=await _context.Categories.FindAsync(id);
+            if (category == null)
+            {
+                throw new KeyNotFoundException($" Category with id {id} not found.");    
+            }
+
+            _context.Categories.Remove(category);
+            await _context.SaveChangesAsync();
+            
         }
 
-        public Task UpdateCategoryAsync(Category category)
+
+
+        public async Task UpdateCategoryAsync(Category category)
         {
-            throw new NotImplementedException();
+            _context.Categories.Update(category);
+            await _context.SaveChangesAsync();
+            
         }
     }
 }
