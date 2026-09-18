@@ -1,4 +1,5 @@
-﻿using BookoPhile.Data;
+﻿using BookoPhile.Business.Services.IServices;
+using BookoPhile.Data;
 using BookoPhile.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,14 +7,14 @@ namespace BookoPhile.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _context;
-        public CategoryController(ApplicationDbContext context)
+        private readonly ICategoryServices _categoryServices;
+        public CategoryController(ICategoryServices categoryServices)
         {
-            _context = context;
+            _categoryServices = categoryServices;
         }
         public IActionResult Index()
         {
-            var categories = _context.Categories.ToList();
+            var categories = _categoryServices.GetCategoriesAsync();
             return View(categories);
         }
 

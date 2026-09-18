@@ -57,5 +57,13 @@ namespace BookoPhile.Business.Services
             await _context.SaveChangesAsync();
             
         }
+
+        public async Task<bool> IsCategoryNameUniqueAsync(string name, int? categoryId = null)
+        {
+            if (categoryId.HasValue)
+            {
+               return !await _context.Categories.AnyAsync(c=>c.Name.ToLower()==name.ToLower() && c.Id!=categoryId.Value)
+            }
+        }
     }
 }

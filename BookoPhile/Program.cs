@@ -1,6 +1,8 @@
 using BookoPhile.Data;
 using Microsoft.SqlServer;
 using Microsoft.EntityFrameworkCore;
+using BookoPhile.Business.Services.IServices;
+using BookoPhile.Business.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+builder.Services.AddScoped<ICategoryServices, CategoryService>();
 
 var app = builder.Build();
 // Configure the HTTP request pipeline.

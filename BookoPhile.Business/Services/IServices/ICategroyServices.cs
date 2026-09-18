@@ -16,5 +16,7 @@ namespace BookoPhile.Business.Services.IServices
         Task UpdateCategoryAsync(Category category);  
 
         Task<Category> DeleteCategoryAsync(int id);
+
+        Task<bool> IsCategoryNameUniqueAsync(string name, int? categoryId=null)
     }
 }
