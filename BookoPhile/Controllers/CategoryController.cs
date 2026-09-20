@@ -61,8 +61,7 @@ namespace BookoPhile.Controllers
         [ActionName("Edit")]
         public IActionResult EditPost(Category category)
         {
-            if(!String.IsNullOrEmpty(category.Name) && _context.Categories.Any(c=>c.Name.ToLower()==category.Name.ToLower() && c.Id != category.Id))
-            {
+            if(!String.IsNullOrEmpty(category.Name) && _categoryServices.IsCategoryNameUniqueAsync())
                 ModelState.AddModelError("", "Category name already exists");
             }
 
