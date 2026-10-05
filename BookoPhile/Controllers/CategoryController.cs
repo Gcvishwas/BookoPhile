@@ -12,13 +12,13 @@ namespace BookoPhile.Controllers
         {
             _categoryServices = categoryServices;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var categories = _categoryServices.GetCategoriesAsync();
+            var categories = await _categoryServices.GetCategoriesAsync();
             return View(categories);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
@@ -26,30 +26,29 @@ namespace BookoPhile.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Create")]
-        public IActionResult CreatePost(Category category)
+        public async Task<IActionResult> CreatePost(Category category)
         {
-            if (!String.IsNullOrEmpty(category.Name) && _context.Categories.Any(c => c.Name == category.Name))
+            if (!String.IsNullOrEmpty(category.Name) && !await _categoryServices.IsCategoryNameUniqueAsync(category.Name))
             {
                 ModelState.AddModelError("", "Category name already exists");
             }
             if(ModelState.IsValid)
             {
-                _context.Categories.Add(category);
-                _context.SaveChanges();
+                await _categoryServices.CreateCategoryAsync(category);
                 TempData["success"] = "Category created successfully";
                 return RedirectToAction("Index");
             }
             return View();
         }
 
-        public IActionResult Edit(int? Id)
+        public async Task<IActionResult> Edit(int? Id)
         {
-            if(Id==null || Id == 0)
+            if (Id == null || Id == 0)
             {
                 return NotFound();
             }
-            var category = _context.Categories.Find(Id);
-            if(category == null)
+            var category = await _categoryServices.GetCategoryByIdAsync(Id.Value);
+            if (category == null)
             {
                 return NotFound();
             }
@@ -59,28 +58,32 @@ namespace BookoPhile.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ActionName("Edit")]
-        public IActionResult EditPost(Category category)
+        public async Task<IActionResult> EditPost(Category category)
         {
-            if(!String.IsNullOrEmpty(category.Name) && _categoryServices.IsCategoryNameUniqueAsync())
+            if (!String.IsNullOrEmpty(category.Name) &&
+                !await _categoryServices.IsCategoryNameUniqueAsync(category.Name, category.Id))
+            {
                 ModelState.AddModelError("", "Category name already exists");
             }
 
             if (ModelState.IsValid)
             {
-                _context.Categories.Update(category);
-                _context.SaveChanges();
+                await _categoryServices.UpdateCategoryAsync(category);
+
                 TempData["success"] = "Category updated successfully";
                 return RedirectToAction("Index");
             }
-            return View();
+
+            return View(category);
         }
-        public IActionResult Delete(int? Id) 
+
+        public async Task<IActionResult> Delete(int? Id)
         {
             if (Id == null || Id == 0)
             {
                 return NotFound();
             }
-            var category = _context.Categories.Find(Id);
+            var category = await _categoryServices.GetCategoryByIdAsync(Id.Value);
             if (category == null)
             {
                 return NotFound();
@@ -92,15 +95,13 @@ namespace BookoPhile.Controllers
         [ValidateAntiForgeryToken]
         [ActionName("Delete")]
 
-        public IActionResult DeleteItem(int? Id)
+        public async Task<IActionResult> DeleteItem(int? Id)
         {
-            var category = _context.Categories.Find(Id);
-            if (category == null)
+            if(Id == null || Id == 0)
             {
                 return NotFound();
             }
-            _context.Categories.Remove(category);
-            _context.SaveChanges();
+            await _categoryServices.DeleteCategoryAsync(Id.Value);
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("index");
         }

@@ -36,7 +36,7 @@ namespace BookoPhile.Business.Services
             return category;
         }
 
-        public async Task<Category> DeleteCategoryAsync(int id)
+        public async Task DeleteCategoryAsync(int id)
         {
            var category=await _context.Categories.FindAsync(id);
             if (category == null)
